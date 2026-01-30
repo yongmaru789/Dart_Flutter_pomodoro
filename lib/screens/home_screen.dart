@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,6 +9,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  int totalSeconds = 1500;
+  bool isRunning = false;
+  late Timer timer;
+
+  void onTick(Timer timer) {
+    setState(() {
+      totalSeconds = totalSeconds -1;
+    });
+  }
+  
+  void onStartPressed() {
+    timer = Timer.periodic(
+      Duration(seconds:1),
+      onTick
+    );
+    setState(() {
+      isRunning = true;
+    });
+  }
+
+  void onPausePressed(){
+    timer.cancel();
+    setState(() {
+      isRunning = false;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
-                '25:00',
+                '$totalSeconds',
                 style: TextStyle(
                   color: Theme.of(context).cardColor,
                   fontSize: 89,
@@ -34,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: IconButton(
                 iconSize: 120,
                 color: Theme.of(context).cardColor,
-                onPressed: () {},
-                icon: Icon(Icons.play_circle_outline),
+                onPressed: isRunning ? onPausePressed : onStartPressed,
+                icon: Icon(isRunning ? Icons.pause_circle_outline : Icons.play_circle_outline),
               ),
             ),
           ),
@@ -46,7 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded (
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(50),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
