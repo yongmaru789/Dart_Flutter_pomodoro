@@ -3,7 +3,7 @@ import 'package:pomodoro/screens/home_screen.dart';
 
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }
 
 
@@ -22,7 +22,7 @@ class App extends StatelessWidget {
         ),
         cardColor: const Color(0xFFF4EDDB),
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );    
   }
 }
